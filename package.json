@@ -14,7 +14,8 @@
     "test": "npm run test:e2e && npm run test:unit",
     "lint": "eslint .",
     "docs:generate": "jsdoc -c jsdoc.conf --readme README-docs.md",
-    "docs:deploy": "rm -rf docs && npm run docs:generate && gh-pages -d docs"
+    "docs:deploy": "rm -rf docs && npm run docs:generate && gh-pages -d docs",
+    "dev": "nodemon index.js"
   },
   "dependencies": {
     "@shelf/jest-mongodb": "^4.1.7",
@@ -22,7 +23,10 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongodb-memory-server": "^8.12.2"
+    "mongodb": "5.7",
+    "mongodb-memory-server": "^8.12.2",
+    "mongoose": "^7.4.1",
+    "nodemon": "^3.0.1"
   },
   "devDependencies": {
     "docdash": "^1.2.0",

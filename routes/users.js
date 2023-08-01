@@ -1,4 +1,6 @@
+/* eslint-disable no-console */
 const bcrypt = require('bcrypt');
+const User = require('../models/User');
 
 const {
   requireAuth,
@@ -9,7 +11,7 @@ const {
   getUsers,
 } = require('../controller/users');
 
-const initAdminUser = (app, next) => {
+const initAdminUser = async (app, next) => {
   const { adminEmail, adminPassword } = app.get('config');
   if (!adminEmail || !adminPassword) {
     return next();
@@ -18,13 +20,22 @@ const initAdminUser = (app, next) => {
   const adminUser = {
     email: adminEmail,
     password: bcrypt.hashSync(adminPassword, 10),
-    roles: { admin: true },
+    role: 'admin',
   };
 
   // TODO: crear usuaria admin
   // Primero ver si ya existe adminUser en base de datos
   // si no existe, hay que guardarlo
 
+  const userExists = await User.findOne({ email: adminUser.email });
+  if (!userExists) {
+    try {
+      const user = new User(adminUser);
+      await user.save();
+    } catch (error) {
+      console.log(error);
+    }
+  }
   next();
 };
 
