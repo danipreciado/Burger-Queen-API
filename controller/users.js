@@ -48,4 +48,13 @@ module.exports = {
       next(error);
     }
   },
+  deleteUser: async (req, resp, next) => {
+    try {
+      const user = await User.findByIdAndDelete(req.params.uid);
+      resp.status(200).json(user);
+    } catch (error) {
+      resp.status(404).send('Error al eliminar el usuario');
+      next(error);
+    }
+  },
 };
