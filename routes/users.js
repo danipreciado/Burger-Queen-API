@@ -9,6 +9,9 @@ const {
 
 const {
   getUsers,
+  postUser,
+  getUser,
+  modifyUser,
 } = require('../controller/users');
 
 const initAdminUser = async (app, next) => {
@@ -23,9 +26,9 @@ const initAdminUser = async (app, next) => {
     role: 'admin',
   };
 
-  // TODO: crear usuaria admin
-  // Primero ver si ya existe adminUser en base de datos
-  // si no existe, hay que guardarlo
+  // TODO: crear usuaria admin  ✅
+  // Primero ver si ya existe adminUser en base de datos  ✅
+  // si no existe, hay que guardarlo  ✅
 
   const userExists = await User.findOne({ email: adminUser.email });
   if (!userExists) {
@@ -106,8 +109,7 @@ module.exports = (app, next) => {
    * @code {403} si no es ni admin o la misma usuaria
    * @code {404} si la usuaria solicitada no existe
    */
-  app.get('/users/:uid', requireAuth, (req, resp) => {
-  });
+  app.get('/users/:uid', requireAuth, getUser);
 
   /**
    * @name POST /users
@@ -128,10 +130,10 @@ module.exports = (app, next) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {403} si ya existe usuaria con ese `email`
    */
-  app.post('/users', requireAdmin, (req, resp, next) => {
+  app.post('/users', requireAdmin, postUser);/* => {
     // TODO: implementar la ruta para agregar
     // nuevos usuarios
-  });
+  }); */
 
   /**
    * @name PUT /users
@@ -155,8 +157,7 @@ module.exports = (app, next) => {
    * @code {403} una usuaria no admin intenta de modificar sus `roles`
    * @code {404} si la usuaria solicitada no existe
    */
-  app.put('/users/:uid', requireAuth, (req, resp, next) => {
-  });
+  app.patch('/users/:uid', requireAuth, modifyUser);
 
   /**
    * @name DELETE /users

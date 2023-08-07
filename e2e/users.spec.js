@@ -177,7 +177,7 @@ describe('POST /users', () => {
       body: {
         email: 'admin1@test.test',
         password: '12345',
-        roles: { admin: true },
+        role: 'admin',
       },
     })
       .then((resp) => {

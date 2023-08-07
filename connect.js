@@ -6,7 +6,7 @@ const config = require('./config');
 const { dbUrl } = config;
 
 async function connect() {
-  // TODO: Conexión a la Base de Datos
+  // TODO: Conexión a la Base de Datos  ✅
   try {
     await mongoose.connect(dbUrl);
     console.log('db connected succesfully');

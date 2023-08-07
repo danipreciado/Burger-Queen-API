@@ -60,6 +60,7 @@ const createTestUser = () => fetchAsAdmin('/users', {
   body: __e2e.testUserCredentials,
 })
   .then((resp) => {
+   
     if (resp.status !== 200) {
       throw new Error(`Error: Could not create test user - response ${resp.status}`);
     }
@@ -85,8 +86,8 @@ const checkAdminCredentials = () => fetch('/auth', {
     return resp.json();
   })
   .then(({ token }) => Object.assign(__e2e, { adminToken: token }));
-
-const waitForServerToBeReady = (retries = 10) => new Promise((resolve, reject) => {
+//cambie retries a 20, era 10
+const waitForServerToBeReady = (retries = 20) => new Promise((resolve, reject) => {
   if (!retries) {
     return reject(new Error('Server took too long to start'));
   }

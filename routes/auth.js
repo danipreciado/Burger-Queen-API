@@ -39,20 +39,18 @@ module.exports = (app, nextMain) => {
       return next(401);
     }
     // TODO: autenticar a la usuarix
-    // Hay que confirmar si el email y password
+    // Hay que confirmar si el email y password  ✅
     // coinciden con un user en la base de datos
-    // Si coinciden, manda un access token creado con jwt
-    // Autenticación exitosa: Crear un token de acceso con jwt
+    // Si coinciden, manda un access token creado con jwt  ✅
+
     const token = jwt.sign({
       _id,
       email,
       password,
       role,
     }, secret, { expiresIn: '1h' });
-    // Enviar el token de acceso como respuesta en el cuerpo de la respuesta JSON
+    resp.status(200);
     return resp.json({ token });
-
-    /*  next(); */
   });
 
   return nextMain();
