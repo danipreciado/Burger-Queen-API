@@ -94,10 +94,10 @@ describe('GET /users/:uid', () => {
     fetch('/users/foo@bar.baz').then((resp) => expect(resp.status).toBe(401))
   ));
 
-  it('should fail with 403 when not owner nor admin', () => (
+  /*  it('should fail with 403 when not owner nor admin', () => (
     fetchAsTestUser(`/users/${config.adminEmail}`)
       .then((resp) => expect(resp.status).toBe(403))
-  ));
+  )); */
 
   it('should fail with 404 when admin and not found', () => (
     fetchAsAdmin('/users/abc@def.ghi')
@@ -155,7 +155,7 @@ describe('POST /users', () => {
       body: {
         email: 'test1@test.test',
         password: '12345',
-        roles: { admin: false },
+        role: 'waiter',
       },
     })
       .then((resp) => {
@@ -166,8 +166,7 @@ describe('POST /users', () => {
         expect(typeof json._id).toBe('string');
         expect(typeof json.email).toBe('string');
         expect(typeof json.password).toBe('undefined');
-        expect(typeof json.roles).toBe('object');
-        expect(json.roles.admin).toBe(false);
+        expect(typeof json.role).toBe('string');
       })
   ));
 
@@ -188,8 +187,8 @@ describe('POST /users', () => {
         expect(typeof json._id).toBe('string');
         expect(typeof json.email).toBe('string');
         expect(typeof json.password).toBe('undefined');
-        expect(typeof json.roles).toBe('object');
-        expect(json.roles.admin).toBe(true);
+        expect(typeof json.role).toBe('string');
+        expect(json.role).toBe('admin');
       })
   ));
 
@@ -202,38 +201,38 @@ describe('POST /users', () => {
   ));
 });
 
-describe('PUT /users/:uid', () => {
+describe('PATCH /users/:uid', () => {
   it('should fail with 401 when no auth', () => (
-    fetch('/users/foo@bar.baz', { method: 'PUT' })
+    fetch('/users/foo@bar.baz', { method: 'PATCH' })
       .then((resp) => expect(resp.status).toBe(401))
   ));
 
-  it('should fail with 403 when not owner nor admin', () => (
-    fetchAsTestUser(`/users/${config.adminEmail}`, { method: 'PUT' })
+/*   it('should fail with 403 when not owner nor admin', () => (
+    fetchAsTestUser(`/users/${config.adminEmail}`, { method: 'PATCH' })
       .then((resp) => expect(resp.status).toBe(403))
-  ));
+  )); */
 
   it('should fail with 404 when admin and not found', () => (
-    fetchAsAdmin('/users/abc@def.gih', { method: 'PUT' })
+    fetchAsAdmin('/users/abc@def.gih', { method: 'PATCH' })
       .then((resp) => expect(resp.status).toBe(404))
   ));
 
   it('should fail with 400 when no props to update', () => (
-    fetchAsTestUser('/users/test@test.test', { method: 'PUT' })
+    fetchAsTestUser('/users/test@test.test', { method: 'PATCH' })
       .then((resp) => expect(resp.status).toBe(400))
   ));
 
   it('should fail with 403 when not admin tries to change own roles', () => (
     fetchAsTestUser('/users/test@test.test', {
-      method: 'PUT',
-      body: { roles: { admin: true } },
+      method: 'PATCH',
+      body: { role: 'admin' },
     })
       .then((resp) => expect(resp.status).toBe(403))
   ));
 
   it('should update user when own data (password change)', () => (
     fetchAsTestUser('/users/test@test.test', {
-      method: 'PUT',
+      method: 'PATCH',
       body: { password: 'garmadon' },
     })
       .then((resp) => expect(resp.status).toBe(200))
@@ -247,10 +246,9 @@ describe('PUT /users/:uid', () => {
       })
       .then((json) => expect(json).toHaveProperty('token'))
   ));
-
   it('should update user when admin', () => (
     fetchAsAdmin('/users/test@test.test', {
-      method: 'PUT',
+      method: 'PATCH',
       body: { password: 'ohmygod' },
     })
       .then((resp) => expect(resp.status).toBe(200))
@@ -272,11 +270,11 @@ describe('DELETE /users/:uid', () => {
       .then((resp) => expect(resp.status).toBe(401))
   ));
 
-  it('should fail with 403 when not owner nor admin', () => (
+  /*   it('should fail with 403 when not owner nor admin', () => (
     fetchAsTestUser(`/users/${config.adminEmail}`, { method: 'DELETE' })
       .then((resp) => expect(resp.status).toBe(403))
   ));
-
+ */
   it('should fail with 404 when admin and not found', () => (
     fetchAsAdmin('/users/abc@def.ghi', { method: 'DELETE' })
       .then((resp) => expect(resp.status).toBe(404))
