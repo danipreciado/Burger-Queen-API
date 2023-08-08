@@ -30,13 +30,14 @@ module.exports = (app, nextMain) => {
     const userExists = await User.findOne({ email });
 
     if (!userExists) {
-      return next(401);
+      return next(404);
     }
 
     const passwordMatches = await bcrypt.compare(password, userExists.password);
     const { role, _id } = userExists;
     if (!passwordMatches) {
-      return next(401);
+      console.log('entra aca');
+      return next(404);
     }
     // TODO: autenticar a la usuarix
     // Hay que confirmar si el email y password  ✅
